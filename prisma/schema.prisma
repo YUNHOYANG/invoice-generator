@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// NextAuth.js 필수 모델
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  invoices      Invoice[]
+  createdAt     DateTime  @default(now())
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// COMMERCIAL INVOICE 모델
+model Invoice {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Invoice 기본 정보
+  invoiceNo     String?
+  invoiceDate   DateTime?
+  paymentTerms  String?
+
+  // Shipper/Seller 정보
+  shipperName    String?
+  shipperAddress String?
+  shipperContact String?
+
+  // Consignee 정보
+  consigneeName    String?
+  consigneeAddress String?
+  consigneeContact String?
+
+  // Buyer 정보 (if different from consignee)
+  buyerName    String?
+  buyerAddress String?
+  buyerContact String?
+
+  // 배송 정보
+  portOfLoading     String?
+  finalDestination  String?
+  vesselFlight      String?
+  sailingDate       DateTime?
+  marksAndNumbers   String?
+
+  // Bank 정보
+  bankName    String?
+  bankAddress String?
+  swiftNo     String?
+  accountNo   String?
+  accountName String?
+
+  // 통화 정보
+  currency String? @default("USD") // 기본 통화 (USD, KRW, EUR 등)
+
+  // 로고 및 기타
+  logoUrl  String?
+  remarks  String?
+
+  // 품목들
+  items InvoiceItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Invoice 품목
+model InvoiceItem {
+  id          String  @id @default(cuid())
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  no          Int
+  description String?
+  quantity    Float?
+  unit        String?         // Q'TY 단위 (UNIT)
+  unitPrice   Float?
+  unitPriceCurrency String?   // U/PRICE 통화
+  amount      Float?
+  amountCurrency String?      // AMOUNT 통화
+  note        String?
+
+  createdAt DateTime @default(now())
+}
