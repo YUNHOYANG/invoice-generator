@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { generateInvoicePDF } from '@/lib/pdfGenerator'
+import type { InvoiceData } from '@/lib/pdfGenerator'
 import CommercialInvoiceForm from '@/components/invoice/CommercialInvoiceForm'
 import ProformaInvoiceForm from '@/components/invoice/ProformaInvoiceForm'
 
@@ -115,7 +116,7 @@ export default function InvoiceForm({ isProforma = false }: InvoiceFormProps) {
     }
 
     // Convert formData to match InvoiceData interface expected by generateInvoicePDF
-    const invoiceData = {
+    const invoiceData: InvoiceData = {
       invoiceNo: formData.invoiceNo,
       invoiceDate: formData.invoiceDate,
       customerReferenceNo: '',
