@@ -5,8 +5,16 @@ export async function POST(request: Request) {
   // Initialize Resend with API key from environment
   const apiKey = process.env.RESEND_API_KEY
 
+  // Debug logging
+  console.log('Environment check:', {
+    hasApiKey: !!apiKey,
+    apiKeyLength: apiKey?.length || 0,
+    allEnvKeys: Object.keys(process.env).filter(k => k.includes('RESEND'))
+  })
+
   if (!apiKey) {
     console.error('RESEND_API_KEY is not set')
+    console.error('Available env vars:', Object.keys(process.env).slice(0, 10))
     return NextResponse.json(
       { success: false, message: 'Email service not configured' },
       { status: 500 }
