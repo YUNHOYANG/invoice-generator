@@ -7,7 +7,7 @@ export default function DisplayAd() {
     <div className="my-8 flex justify-center">
       <div className="w-full max-w-4xl">
         <AdSense
-          adSlot="1234567890"
+          adSlot="8390252874"
           adFormat="auto"
           fullWidthResponsive={true}
         />
