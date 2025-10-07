@@ -25,8 +25,8 @@ export default function Header() {
             <a href="/guide" className="text-gray-700 hover:text-blue-600 transition">
               Guide
             </a>
-            <a href="/contact" className="text-gray-700 hover:text-blue-600 transition">
-              Contact
+            <a href="/email" className="text-gray-700 hover:text-blue-600 transition">
+              Contact Us
             </a>
           </div>
 
@@ -56,8 +56,8 @@ export default function Header() {
             <a href="/guide" className="block text-gray-700 hover:text-blue-600 transition">
               Guide
             </a>
-            <a href="/contact" className="block text-gray-700 hover:text-blue-600 transition">
-              Contact
+            <a href="/email" className="block text-gray-700 hover:text-blue-600 transition">
+              Contact Us
             </a>
           </div>
         )}
