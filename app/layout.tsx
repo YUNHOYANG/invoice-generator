@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     canonical: 'https://threppa.net',
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: 'NlepmYjdHamdK2eh4evQfGBl020JTpbkvUso8q3kzEk',
   },
 }
 
