@@ -1,5 +1,6 @@
 import InvoiceForm from '@/components/invoice/InvoiceForm'
 import TemplateSelector from '@/components/TemplateSelector'
+import DisplayAd from '@/components/ads/DisplayAd'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -40,7 +41,9 @@ export default function Home() {
       />
       <main className="min-h-screen p-8 bg-gray-50">
         <TemplateSelector />
+        <DisplayAd />
         <InvoiceForm />
+        <DisplayAd />
       </main>
     </>
   )

@@ -1,6 +1,16 @@
 {
-  "/page": "app/page.js",
-  "/blog/page": "app/blog/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
   "/blog/[id]/page": "app/blog/[id]/page.js",
+  "/guide/page": "app/guide/page.js",
+  "/packing-list/page": "app/packing-list/page.js",
+  "/blog/page": "app/blog/page.js",
+  "/proforma-invoice/page": "app/proforma-invoice/page.js",
+  "/terms-of-service/page": "app/terms-of-service/page.js",
+  "/privacy-policy/page": "app/privacy-policy/page.js",
+  "/unit-converter/page": "app/unit-converter/page.js",
+  "/about/page": "app/about/page.js",
+  "/page": "app/page.js",
   "/contact/page": "app/contact/page.js"
 }
