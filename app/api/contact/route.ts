@@ -5,13 +5,20 @@ export async function POST(request: Request) {
   try {
     const { name, email, subject, message } = await request.json()
 
-    // Create transporter using Gmail SMTP
+    // Create transporter using Gmail SMTP with explicit settings
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // use STARTTLS
       auth: {
         user: process.env.GMAIL_USER,
         pass: process.env.GMAIL_APP_PASSWORD, // App Password, not regular password
       },
+      tls: {
+        rejectUnauthorized: false
+      },
+      connectionTimeout: 10000, // 10 seconds
+      greetingTimeout: 10000,
     })
 
     // Email to admin
