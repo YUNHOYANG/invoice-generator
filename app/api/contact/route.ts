@@ -1,30 +1,17 @@
 import { NextResponse } from 'next/server'
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: Request) {
   try {
     const { name, email, subject, message } = await request.json()
 
-    // Create transporter using Gmail SMTP with explicit settings
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false, // use STARTTLS
-      auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD, // App Password, not regular password
-      },
-      tls: {
-        rejectUnauthorized: false
-      },
-      connectionTimeout: 10000, // 10 seconds
-      greetingTimeout: 10000,
-    })
-
-    // Email to admin
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
-      to: 'treadmall@gmail.com',
+    // Send email using Resend
+    const { data, error } = await resend.emails.send({
+      from: 'Invoice Generator <onboarding@resend.dev>', // Resend's default sender for testing
+      to: ['treadmall@gmail.com'],
+      replyTo: email,
       subject: `Contact Form: ${subject}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -44,12 +31,17 @@ export async function POST(request: Request) {
           </div>
         </div>
       `,
+    })
+
+    if (error) {
+      console.error('Resend error:', error)
+      return NextResponse.json(
+        { success: false, message: 'Failed to send email' },
+        { status: 500 }
+      )
     }
 
-    // Send email
-    await transporter.sendMail(mailOptions)
-
-    return NextResponse.json({ success: true, message: 'Email sent successfully' })
+    return NextResponse.json({ success: true, message: 'Email sent successfully', data })
   } catch (error) {
     console.error('Error sending email:', error)
     return NextResponse.json(

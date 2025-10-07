@@ -68,45 +68,48 @@ model Invoice {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   // Invoice 기본 정보
-  invoiceNo     String?
-  invoiceDate   DateTime?
-  paymentTerms  String?
+  invoiceNo            String?
+  invoiceDate          String?
+  customerReferenceNo  String?
+  customerReferenceDate String?
 
-  // Shipper/Seller 정보
-  shipperName    String?
-  shipperAddress String?
-  shipperContact String?
+  // Seller 정보
+  sellerName    String?
+  sellerAddress String?
+  sellerContact String?
 
-  // Consignee 정보
-  consigneeName    String?
-  consigneeAddress String?
-  consigneeContact String?
+  // Sold To 정보
+  soldToName    String?
+  soldToAddress String?
+  soldToContact String?
 
-  // Buyer 정보 (if different from consignee)
-  buyerName    String?
-  buyerAddress String?
-  buyerContact String?
+  // Ship To 정보
+  shipToName    String?
+  shipToAddress String?
+  shipToContact String?
 
-  // 배송 정보
-  portOfLoading     String?
-  finalDestination  String?
-  vesselFlight      String?
-  sailingDate       DateTime?
-  marksAndNumbers   String?
+  // Terms and Shipping
+  termsOfSale         String?
+  termsOfPayment      String?
+  currencyOfSettlement String? @default("USD")
+  modeOfShipment      String?
+  billOfLading        String?
 
-  // Bank 정보
-  bankName    String?
-  bankAddress String?
-  swiftNo     String?
-  accountNo   String?
-  accountName String?
+  // Package and Totals
+  packageMarks         String?
+  totalCommercialValue String?
+  miscCharges          String?
+  totalInvoiceValue    String?
 
-  // 통화 정보
-  currency String? @default("USD") // 기본 통화 (USD, KRW, EUR 등)
+  // Certifications
+  certificationText String?
+  signedBy          String?
+  title             String?
 
   // 로고 및 기타
   logoUrl  String?
-  remarks  String?
+  remarks  String? @db.Text
+  template String? @default("korean") // Invoice template: korean or standard
 
   // 품목들
   items InvoiceItem[]
@@ -132,4 +135,18 @@ model InvoiceItem {
   note        String?
 
   createdAt DateTime @default(now())
+}
+
+// Blog Post 모델
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  excerpt   String   @db.Text
+  content   String   @db.Text
+  category  String
+  readTime  String
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
