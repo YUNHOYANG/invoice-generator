@@ -5,11 +5,12 @@ export async function POST(request: Request) {
   // Initialize Resend with API key from environment
   const apiKey = process.env.RESEND_API_KEY
 
-  // Debug logging
+  // Debug logging - Railway deployment check
   console.log('Environment check:', {
     hasApiKey: !!apiKey,
     apiKeyLength: apiKey?.length || 0,
-    allEnvKeys: Object.keys(process.env).filter(k => k.includes('RESEND'))
+    allEnvKeys: Object.keys(process.env).filter(k => k.includes('RESEND')),
+    nodeEnv: process.env.NODE_ENV
   })
 
   if (!apiKey) {
